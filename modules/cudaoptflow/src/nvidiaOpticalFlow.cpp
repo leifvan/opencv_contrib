@@ -5,8 +5,8 @@
 //
 //M*/
 #include "precomp.hpp"
-#define HAVE_CUDA
-#define HAVE_NVIDIA_OPTFLOW
+// #define HAVE_CUDA
+// #define HAVE_NVIDIA_OPTFLOW
 
 #if !defined HAVE_CUDA || defined(CUDA_DISABLER)
 

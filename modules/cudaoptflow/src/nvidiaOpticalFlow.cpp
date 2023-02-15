@@ -5,6 +5,8 @@
 //
 //M*/
 #include "precomp.hpp"
+#define HAVE_CUDA
+#define HAVE_NVIDIA_OPTFLOW
 
 #if !defined HAVE_CUDA || defined(CUDA_DISABLER)
 
@@ -723,7 +725,7 @@ private:
 
     CUcontext m_cuContext;
     int m_scaleFactor;
-    NV_OF_BUFFER_FORMAT m_format;
+    NVIDIA_OF_INPUT_BUFFER_FORMAT m_format;
     NV_OF_OUTPUT_VECTOR_GRID_SIZE m_hwGridSize;
 
     NV_OF_BUFFER_DESCRIPTOR m_inputBufferDesc;
@@ -789,19 +791,35 @@ public:
 };
 
 NvidiaOpticalFlowImpl_2::NvidiaOpticalFlowImpl_2(
-    cv::Size imageSize, NV_OF_PERF_LEVEL perfPreset,
-    NV_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize, NV_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
-    NVIDIA_OF_BUFFER_FORMAT bufferFormat,
-    bool bEnableROI, std::vector<Rect> roiData, bool bEnableTemporalHints,
-    bool bEnableExternalHints, bool bEnableCostBuffer, int gpuId, Stream inputStream, Stream outputStream) :
-    m_width(imageSize.width), m_height(imageSize.height), m_preset(perfPreset),
-    m_gridSize(outputGridSize), m_hintGridSize(hintGridSize),
-    m_enableROI(bEnableROI), m_roiDataRect(roiData),
+    cv::Size imageSize,
+    NV_OF_PERF_LEVEL perfPreset,
+    NV_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize,
+    NV_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
+    NVIDIA_OF_INPUT_BUFFER_FORMAT bufferFormat,
+    bool bEnableROI,
+    std::vector<Rect> roiData,
+    bool bEnableTemporalHints,
+    bool bEnableExternalHints,
+    bool bEnableCostBuffer,
+    int gpuId,
+    Stream inputStream,
+    Stream outputStream) :
+    m_width(imageSize.width),
+    m_height(imageSize.height),
+    m_preset(perfPreset),
+    m_gridSize(outputGridSize),
+    m_hintGridSize(hintGridSize),
+    m_enableROI(bEnableROI),
+    m_roiDataRect(roiData),
     m_enableTemporalHints((NV_OF_BOOL)bEnableTemporalHints),
     m_enableExternalHints((NV_OF_BOOL)bEnableExternalHints),
-    m_enableCostBuffer((NV_OF_BOOL)bEnableCostBuffer), m_gpuId(gpuId),
-    m_inputStream(inputStream), m_outputStream(outputStream),
-    m_cuContext(nullptr), m_scaleFactor(1), m_format(bufferFormat),
+    m_enableCostBuffer((NV_OF_BOOL)bEnableCostBuffer),
+    m_gpuId(gpuId),
+    m_inputStream(inputStream),
+    m_outputStream(outputStream),
+    m_cuContext(nullptr),
+    m_scaleFactor(1),
+    m_format(bufferFormat),
     m_hwGridSize((NV_OF_OUTPUT_VECTOR_GRID_SIZE)0)
 {
     LoadNvidiaModules& LoadNvidiaModulesObj = LoadNvidiaModules::Init();
@@ -906,7 +924,7 @@ NvidiaOpticalFlowImpl_2::NvidiaOpticalFlowImpl_2(
     memset(&m_inputBufferDesc, 0, sizeof(m_inputBufferDesc));
     m_inputBufferDesc.width = m_width;
     m_inputBufferDesc.height = m_height;
-    m_inputBufferDesc.bufferFormat = m_format;
+    m_inputBufferDesc.bufferFormat = static_cast<NV_OF_BUFFER_FORMAT>(m_format);
     m_inputBufferDesc.bufferUsage = NV_OF_BUFFER_USAGE_INPUT;
 
     memset(&m_outputBufferDesc, 0, sizeof(m_outputBufferDesc));

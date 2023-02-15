@@ -505,13 +505,13 @@ public:
     /**
     * Supported input buffer types.
     */
-    typedef enum NVIDIA_OF_BUFFER_FORMAT
+    typedef enum NVIDIA_OF_INPUT_BUFFER_FORMAT
     {
-        NV_OF_BUFFER_FORMAT_UNDEFINED,
-        NV_OF_BUFFER_FORMAT_GRAYSCALE8,               /**< Input buffer format with 8 bit planar format */
-        NV_OF_BUFFER_FORMAT_NV12,                     /**< Input buffer format with 8 bit planar, UV interleaved */
-        NV_OF_BUFFER_FORMAT_ABGR8,                    /**< Input buffer format with 8 bit packed A8B8G8R8 */
-        NV_OF_BUFFER_FORMAT_MAX
+        NV_OF_INPUT_BUFFER_FORMAT_UNDEFINED,
+        NV_OF_INPUT_BUFFER_FORMAT_GRAYSCALE8,               /**< Input buffer format with 8 bit planar format */
+        NV_OF_INPUT_BUFFER_FORMAT_NV12,                     /**< Input buffer format with 8 bit planar, UV interleaved */
+        NV_OF_INPUT_BUFFER_FORMAT_ABGR8,                    /**< Input buffer format with 8 bit packed A8B8G8R8 */
+        NV_OF_INPUT_BUFFER_FORMAT_MAX
     };
 
     /** @brief convertToFloat() helper function converts the hardware-generated flow vectors to floating point representation (1 flow vector for gridSize).

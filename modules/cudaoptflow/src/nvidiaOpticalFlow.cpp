@@ -725,7 +725,7 @@ private:
 
     CUcontext m_cuContext;
     int m_scaleFactor;
-    NVIDIA_OF_INPUT_BUFFER_FORMAT m_format;
+    NV_OF_BUFFER_FORMAT m_format;
     NV_OF_OUTPUT_VECTOR_GRID_SIZE m_hwGridSize;
 
     NV_OF_BUFFER_DESCRIPTOR m_inputBufferDesc;
@@ -771,11 +771,20 @@ private:
     NvOFHandle GetHandle() { return m_hOF; }
 
 public:
-    NvidiaOpticalFlowImpl_2(cv::Size imageSize, NV_OF_PERF_LEVEL perfPreset,
-        NV_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize, NV_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
-        NVIDIA_OF_BUFER_FORMAT bufferFormat,
-        bool bEnableROI, std::vector<Rect> roiData, bool bEnableTemporalHints,
-        bool bEnableExternalHints, bool bEnableCostBuffer, int gpuId, Stream inputStream, Stream outputStream);
+    NvidiaOpticalFlowImpl_2(
+        cv::Size imageSize,
+        NV_OF_PERF_LEVEL perfPreset,
+        NV_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize,
+        NV_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
+        NV_OF_BUFFER_FORMAT inputFormat,
+        bool bEnableROI,
+        std::vector<Rect> roiData,
+        bool bEnableTemporalHints,
+        bool bEnableExternalHints,
+        bool bEnableCostBuffer,
+        int gpuId,
+        Stream inputStream,
+        Stream outputStream);
 
     virtual void calc(InputArray inputImage, InputArray referenceImage,
         InputOutputArray flow, Stream& stream = Stream::Null(),
@@ -795,7 +804,7 @@ NvidiaOpticalFlowImpl_2::NvidiaOpticalFlowImpl_2(
     NV_OF_PERF_LEVEL perfPreset,
     NV_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize,
     NV_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
-    NVIDIA_OF_INPUT_BUFFER_FORMAT bufferFormat,
+    NV_OF_BUFFER_FORMAT inputFormat,
     bool bEnableROI,
     std::vector<Rect> roiData,
     bool bEnableTemporalHints,
@@ -819,7 +828,7 @@ NvidiaOpticalFlowImpl_2::NvidiaOpticalFlowImpl_2(
     m_outputStream(outputStream),
     m_cuContext(nullptr),
     m_scaleFactor(1),
-    m_format(bufferFormat),
+    m_format(inputFormat),
     m_hwGridSize((NV_OF_OUTPUT_VECTOR_GRID_SIZE)0)
 {
     LoadNvidiaModules& LoadNvidiaModulesObj = LoadNvidiaModules::Init();
@@ -924,7 +933,7 @@ NvidiaOpticalFlowImpl_2::NvidiaOpticalFlowImpl_2(
     memset(&m_inputBufferDesc, 0, sizeof(m_inputBufferDesc));
     m_inputBufferDesc.width = m_width;
     m_inputBufferDesc.height = m_height;
-    m_inputBufferDesc.bufferFormat = static_cast<NV_OF_BUFFER_FORMAT>(m_format);
+    m_inputBufferDesc.bufferFormat = m_format;
     m_inputBufferDesc.bufferUsage = NV_OF_BUFFER_USAGE_INPUT;
 
     memset(&m_outputBufferDesc, 0, sizeof(m_outputBufferDesc));
@@ -1294,10 +1303,17 @@ Ptr<cv::cuda::NvidiaOpticalFlow_1_0> cv::cuda::NvidiaOpticalFlow_1_0::create(
 }
 
 Ptr<cv::cuda::NvidiaOpticalFlow_2_0> cv::cuda::NvidiaOpticalFlow_2_0::create(
-    cv::Size imageSize, NVIDIA_OF_PERF_LEVEL perfPreset,
-    NVIDIA_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize, NVIDIA_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
-    bool bEnableTemporalHints, bool bEnableExternalHints, bool bEnableCostBuffer,
-    int gpuId, Stream& inputStream, Stream& outputStream)
+    cv::Size imageSize,
+    NVIDIA_OF_PERF_LEVEL perfPreset,
+    NVIDIA_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize,
+    NVIDIA_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
+    NVIDIA_OF_INPUT_BUFFER_FORMAT inputFormat,
+    bool bEnableTemporalHints,
+    bool bEnableExternalHints,
+    bool bEnableCostBuffer,
+    int gpuId,
+    Stream& inputStream,
+    Stream& outputStream)
 {
     std::vector<Rect> roi(0);
     return makePtr<NvidiaOpticalFlowImpl_2>(
@@ -1305,6 +1321,7 @@ Ptr<cv::cuda::NvidiaOpticalFlow_2_0> cv::cuda::NvidiaOpticalFlow_2_0::create(
         (NV_OF_PERF_LEVEL)perfPreset,
         (NV_OF_OUTPUT_VECTOR_GRID_SIZE)outputGridSize,
         (NV_OF_HINT_VECTOR_GRID_SIZE)hintGridSize,
+        (NV_OF_BUFFER_FORMAT)inputFormat,
         false,
         roi,
         bEnableTemporalHints,
@@ -1316,16 +1333,25 @@ Ptr<cv::cuda::NvidiaOpticalFlow_2_0> cv::cuda::NvidiaOpticalFlow_2_0::create(
 }
 
 Ptr<cv::cuda::NvidiaOpticalFlow_2_0> cv::cuda::NvidiaOpticalFlow_2_0::create(
-  cv::Size imageSize, std::vector<Rect> roiData, NVIDIA_OF_PERF_LEVEL perfPreset,
-  NVIDIA_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize, NVIDIA_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
-  bool bEnableTemporalHints, bool bEnableExternalHints, bool bEnableCostBuffer,
-  int gpuId, Stream& inputStream, Stream& outputStream)
+  cv::Size imageSize,
+  std::vector<Rect> roiData,
+  NVIDIA_OF_PERF_LEVEL perfPreset,
+  NVIDIA_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize,
+  NVIDIA_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
+  NVIDIA_OF_INPUT_BUFFER_FORMAT inputFormat,
+  bool bEnableTemporalHints,
+  bool bEnableExternalHints,
+  bool bEnableCostBuffer,
+  int gpuId,
+  Stream& inputStream,
+  Stream& outputStream)
 {
     return makePtr<NvidiaOpticalFlowImpl_2>(
         imageSize,
         (NV_OF_PERF_LEVEL)perfPreset,
         (NV_OF_OUTPUT_VECTOR_GRID_SIZE)outputGridSize,
         (NV_OF_HINT_VECTOR_GRID_SIZE)hintGridSize,
+        (NV_OF_BUFFER_FORMAT)inputFormat,
         true,
         roiData,
         bEnableTemporalHints,

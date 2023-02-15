@@ -5,6 +5,8 @@
 //
 //M*/
 #include "precomp.hpp"
+#define HAVE_CUDA=1
+#define HAVE_NVIDIA_OPTFLOW=1
 
 #if !defined HAVE_CUDA || defined(CUDA_DISABLER)
 
@@ -771,6 +773,7 @@ private:
 public:
     NvidiaOpticalFlowImpl_2(cv::Size imageSize, NV_OF_PERF_LEVEL perfPreset,
         NV_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize, NV_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
+        NVIDIA_OF_BUFER_FORMAT bufferFormat,
         bool bEnableROI, std::vector<Rect> roiData, bool bEnableTemporalHints,
         bool bEnableExternalHints, bool bEnableCostBuffer, int gpuId, Stream inputStream, Stream outputStream);
 
@@ -790,6 +793,7 @@ public:
 NvidiaOpticalFlowImpl_2::NvidiaOpticalFlowImpl_2(
     cv::Size imageSize, NV_OF_PERF_LEVEL perfPreset,
     NV_OF_OUTPUT_VECTOR_GRID_SIZE outputGridSize, NV_OF_HINT_VECTOR_GRID_SIZE hintGridSize,
+    NVIDIA_OF_BUFFER_FORMAT bufferFormat,
     bool bEnableROI, std::vector<Rect> roiData, bool bEnableTemporalHints,
     bool bEnableExternalHints, bool bEnableCostBuffer, int gpuId, Stream inputStream, Stream outputStream) :
     m_width(imageSize.width), m_height(imageSize.height), m_preset(perfPreset),
@@ -799,7 +803,7 @@ NvidiaOpticalFlowImpl_2::NvidiaOpticalFlowImpl_2(
     m_enableExternalHints((NV_OF_BOOL)bEnableExternalHints),
     m_enableCostBuffer((NV_OF_BOOL)bEnableCostBuffer), m_gpuId(gpuId),
     m_inputStream(inputStream), m_outputStream(outputStream),
-    m_cuContext(nullptr), m_scaleFactor(1), m_format(NV_OF_BUFFER_FORMAT_GRAYSCALE8),
+    m_cuContext(nullptr), m_scaleFactor(1), m_format(bufferFormat),
     m_hwGridSize((NV_OF_OUTPUT_VECTOR_GRID_SIZE)0)
 {
     LoadNvidiaModules& LoadNvidiaModulesObj = LoadNvidiaModules::Init();

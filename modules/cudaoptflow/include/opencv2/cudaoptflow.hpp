@@ -502,6 +502,18 @@ public:
         NV_OF_HINT_VECTOR_GRID_SIZE_MAX
     };
 
+    /**
+    * Supported input buffer types.
+    */
+    typedef enum NVIDIA_OF_BUFFER_FORMAT
+    {
+        NV_OF_BUFFER_FORMAT_UNDEFINED,
+        NV_OF_BUFFER_FORMAT_GRAYSCALE8,               /**< Input buffer format with 8 bit planar format */
+        NV_OF_BUFFER_FORMAT_NV12,                     /**< Input buffer format with 8 bit planar, UV interleaved */
+        NV_OF_BUFFER_FORMAT_ABGR8,                    /**< Input buffer format with 8 bit packed A8B8G8R8 */
+        NV_OF_BUFFER_FORMAT_MAX
+    };
+
     /** @brief convertToFloat() helper function converts the hardware-generated flow vectors to floating point representation (1 flow vector for gridSize).
     * gridSize can be queried via function getGridSize().
 
@@ -519,6 +531,8 @@ public:
                           Defaults to NV_OF_OUTPUT_VECTOR_GRID_SIZE_1.
     @param hintGridSize Optional parameter. Refer [NV OF SDK documentation](https://developer.nvidia.com/opticalflow-sdk) for details about hint grid sizes.
                         Defaults to NV_OF_HINT_VECTOR_GRID_SIZE_1.
+    @param inputFormat Optional parameter. Refer [NV OF SDK documentation](https://developer.nvidia.com/opticalflow-sdk) for details about buffer formats.
+                       Defaults to NV_OF_BUFFER_FORMAT_GRAYSCALE8.
     @param enableTemporalHints Optional parameter. Flag to enable temporal hints. When set to true, the hardware uses the flow vectors
                                generated in previous call to calc() as internal hints for the current call to calc().
                                Useful when computing flow vectors between successive video frames. Defaults to false.
@@ -540,6 +554,8 @@ public:
         = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_OUTPUT_VECTOR_GRID_SIZE_1,
         cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_HINT_VECTOR_GRID_SIZE hintGridSize
         = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_HINT_VECTOR_GRID_SIZE_1,
+        cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_BUFFER_FORMAT inputFormat
+        = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_BUFFER_FORMAT_GRAYSCALE8,
         bool enableTemporalHints = false,
         bool enableExternalHints = false,
         bool enableCostBuffer = false,
@@ -557,6 +573,8 @@ public:
                           Defaults to NV_OF_OUTPUT_VECTOR_GRID_SIZE_1.
     @param hintGridSize Optional parameter. Refer [NV OF SDK documentation](https://developer.nvidia.com/opticalflow-sdk) for details about hint grid sizes.
                         Defaults to NV_OF_HINT_VECTOR_GRID_SIZE_1.
+    @param inputFormat Optional parameter. Refer [NV OF SDK documentation](https://developer.nvidia.com/opticalflow-sdk) for details about buffer formats.
+                       Defaults to NV_OF_BUFFER_FORMAT_GRAYSCALE8.
     @param enableTemporalHints Optional parameter. Flag to enable temporal hints. When set to true, the hardware uses the flow vectors
                                generated in previous call to calc() as internal hints for the current call to calc().
                                Useful when computing flow vectors between successive video frames. Defaults to false.
@@ -579,6 +597,8 @@ public:
         = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_OUTPUT_VECTOR_GRID_SIZE_1,
         cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_HINT_VECTOR_GRID_SIZE hintGridSize
         = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_HINT_VECTOR_GRID_SIZE_1,
+        cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_BUFFER_FORMAT inputFormat
+        = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_BUFFER_FORMAT_GRAYSCALE8,
         bool enableTemporalHints = false,
         bool enableExternalHints = false,
         bool enableCostBuffer = false,

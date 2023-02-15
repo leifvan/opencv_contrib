@@ -554,8 +554,8 @@ public:
         = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_OUTPUT_VECTOR_GRID_SIZE_1,
         cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_HINT_VECTOR_GRID_SIZE hintGridSize
         = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_HINT_VECTOR_GRID_SIZE_1,
-        cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_BUFFER_FORMAT inputFormat
-        = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_BUFFER_FORMAT_GRAYSCALE8,
+        cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_INPUT_BUFFER_FORMAT inputFormat
+        = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_INPUT_BUFFER_FORMAT_GRAYSCALE8,
         bool enableTemporalHints = false,
         bool enableExternalHints = false,
         bool enableCostBuffer = false,
@@ -597,8 +597,8 @@ public:
         = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_OUTPUT_VECTOR_GRID_SIZE_1,
         cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_HINT_VECTOR_GRID_SIZE hintGridSize
         = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_HINT_VECTOR_GRID_SIZE_1,
-        cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_BUFFER_FORMAT inputFormat
-        = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_BUFFER_FORMAT_GRAYSCALE8,
+        cv::cuda::NvidiaOpticalFlow_2_0::NVIDIA_OF_INPUT_BUFFER_FORMAT inputFormat
+        = cv::cuda::NvidiaOpticalFlow_2_0::NV_OF_INPUT_BUFFER_FORMAT_GRAYSCALE8,
         bool enableTemporalHints = false,
         bool enableExternalHints = false,
         bool enableCostBuffer = false,
